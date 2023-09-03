@@ -53,8 +53,8 @@ model Host {
 
 model Car {
   id String @id @default(auto()) @map("_id") @db.ObjectId
-  v Int @default(0) @map("__v") @ignore
+  v  Int    @default(0) @map("__v") @ignore
 
-  host Host @relation(fields: [hostId], references: [id])
+  host   Host   @relation(fields: [hostId], references: [id])
   hostId String @map("host") @db.ObjectId
 }
