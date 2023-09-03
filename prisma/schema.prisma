@@ -1,0 +1,46 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       String   @id @default(auto()) @map("_id") @db.ObjectId
+  v        Int      @default(0) @map("__v") @ignore
+  email    String   @unique(map: "email_1")
+  password String
+  profile  Profile?
+
+  @@map("users")
+}
+
+model Profile {
+  id        String  @id @default(auto()) @map("_id") @db.ObjectId
+  v         Int     @default(0) @map("__v") @ignore
+  firstname String
+  lastname  String
+  user      User    @relation(fields: [userId], references: [id])
+  userId    String  @unique(map: "user") @map("user") @db.ObjectId
+  client    Client?
+  host      Host?
+
+  @@map("profiles")
+}
+
+model Client {
+  id        String  @id @default(auto()) @map("_id") @db.ObjectId
+  v         Int     @default(0) @map("__v") @ignore
+  profile   Profile @relation(fields: [profileId], references: [id])
+  profileId String  @unique(map: "profile") @map("profile") @db.ObjectId
+}
+
+model Host {
+  id             String   @id @default(auto()) @map("_id") @db.ObjectId
+  v              Int      @default(0) @map("__v") @ignore
+  profile        Profile  @relation(fields: [profileId], references: [id])
+  profileId      String   @unique(map: "profile") @map("profile") @db.ObjectId
+  becomeHostDate DateTime
+}
