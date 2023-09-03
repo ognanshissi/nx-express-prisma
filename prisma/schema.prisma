@@ -35,6 +35,8 @@ model Client {
   v         Int     @default(0) @map("__v") @ignore
   profile   Profile @relation(fields: [profileId], references: [id])
   profileId String  @unique(map: "profile") @map("profile") @db.ObjectId
+
+  @@map("clients")
 }
 
 model Host {
@@ -43,4 +45,16 @@ model Host {
   profile        Profile  @relation(fields: [profileId], references: [id])
   profileId      String   @unique(map: "profile") @map("profile") @db.ObjectId
   becomeHostDate DateTime
+
+  cars Car[]
+
+  @@map("hosts")
+}
+
+model Car {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  v Int @default(0) @map("__v") @ignore
+
+  host Host @relation(fields: [hostId], references: [id])
+  hostId String @map("host") @db.ObjectId
 }
