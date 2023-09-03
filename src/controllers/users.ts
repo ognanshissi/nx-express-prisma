@@ -51,10 +51,6 @@ export const createUser = async (req: Request, res: Response) => {
             }
         })
 
-        console.log(createdUser)
-
-        // create a default profile for each user
-
         return res.status(200).json(completeUser);
     } catch(error) {
         return res.status(500).json(error);
